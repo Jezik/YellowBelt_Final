@@ -10,6 +10,8 @@ public:
 	int GetYear() const;
 	int GetMonth() const;
 	int GetDay() const;
+	
+	string ToString() const;
 
 private:
 	const int year_;

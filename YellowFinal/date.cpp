@@ -2,6 +2,7 @@
 
 #include <iomanip>
 #include <tuple>
+#include <sstream>
 
 // Constructor
 Date::Date(const int& year, const int& month, const int& day) : year_(year), month_(month), day_(day) {};
@@ -17,6 +18,12 @@ int Date::GetMonth() const {
 
 int Date::GetDay() const {
 	return day_;
+}
+
+string Date::ToString() const {
+	stringstream ss;
+	ss << *this;
+	return ss.str();
 }
 
 // Creating Date object from an input stream
