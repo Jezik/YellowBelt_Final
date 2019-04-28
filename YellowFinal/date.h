@@ -20,5 +20,10 @@ private:
 Date ParseDate(istream& stream);
 
 bool operator< (const Date& lhs, const Date& rhs);
+bool operator<= (const Date& lhs, const Date& rhs);
+bool operator> (const Date& lhs, const Date& rhs);
+bool operator>= (const Date& lhs, const Date& rhs);
+bool operator== (const Date& lhs, const Date& rhs);
+bool operator!= (const Date& lhs, const Date& rhs);
 
 ostream& operator<< (ostream& stream, const Date& date);

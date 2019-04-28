@@ -32,7 +32,7 @@ public:
 
 class DateComparisonNode : public Node {
 public:
-	DateComparisonNode(const Comparison& cmp, const Date& date) : cmp_(cmp), date_(date) {};
+	DateComparisonNode(const Comparison& cmp, const Date& date);
 	bool Evaluate(const Date& date, const string& event) const override;
 
 private:	
@@ -42,7 +42,7 @@ private:
 
 class EventComparisonNode : public Node {
 public:
-	EventComparisonNode(const Comparison& cmp, const string& event) : cmp_(cmp), event_(event) {};
+	EventComparisonNode(const Comparison& cmp, const string& event);
 	bool Evaluate(const Date& date, const string& event) const override;
 
 private:
@@ -52,8 +52,7 @@ private:
 
 class LogicalOperationNode : public Node {
 public:
-	LogicalOperationNode(const LogicalOperation op, const shared_ptr<Node>& lhs_node, const shared_ptr<Node>& rhs_node)
-		: op_(op), lhs_node_(lhs_node), rhs_node_(rhs_node_) {};
+	LogicalOperationNode(const LogicalOperation op, const shared_ptr<Node>& lhs_node, const shared_ptr<Node>& rhs_node);
 
 	bool Evaluate(const Date& date, const string& event) const override;
 
