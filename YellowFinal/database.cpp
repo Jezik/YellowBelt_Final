@@ -69,3 +69,11 @@ string Database::Last(const Date& date) const {
 		return "No entries";
 	}
 }
+
+ostream& operator<< (ostream& stream, const pair<Date, vector<string>>& p) {
+	for (const string& str : p.second) {
+		stream << p.first << " " << str << endl;
+	}
+
+	return stream;
+}

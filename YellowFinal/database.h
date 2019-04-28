@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <functional>
+#include <utility>
 
 using namespace std;
 
@@ -22,3 +23,5 @@ public:
 private:
 	map<Date, vector<string>> mapDBevents_;
 };
+
+ostream& operator<< (ostream& stream, const pair<Date, vector<string>>& p);
