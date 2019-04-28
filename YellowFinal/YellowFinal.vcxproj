@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="condition_parser.cpp" />
     <ClCompile Include="condition_parser_test.cpp" />
+    <ClCompile Include="date.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="token.cpp" />
   </ItemGroup>

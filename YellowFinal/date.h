@@ -5,7 +5,7 @@ using namespace std;
 
 class Date {
 public:
-	Date(const int& year, const int& month, const int& day) : year_(year), month_(month), day_(day) {};
+	Date(const int& year, const int& month, const int& day);
 
 	int GetYear() const;
 	int GetMonth() const;
