@@ -22,18 +22,18 @@ enum LogicalOperation {
 
 class Node {
 public:
-	virtual bool Evaluate(const Date& date, const string& event) const = 0;
+	virtual bool Evaluate(const Date& date, const string& event) = 0;
 };
 
 class EmptyNode : public Node {
 public:
-	bool Evaluate(const Date& date, const string& event) const override;
+	bool Evaluate(const Date& date, const string& event) override;
 };
 
 class DateComparisonNode : public Node {
 public:
 	DateComparisonNode(const Comparison& cmp, const Date& date);
-	bool Evaluate(const Date& date, const string& event) const override;
+	bool Evaluate(const Date& date, const string& event) override;
 
 private:	
 	const Comparison cmp_;
@@ -43,7 +43,7 @@ private:
 class EventComparisonNode : public Node {
 public:
 	EventComparisonNode(const Comparison& cmp, const string& event);
-	bool Evaluate(const Date& date, const string& event) const override;
+	bool Evaluate(const Date& date, const string& event) override;
 
 private:
 	const Comparison cmp_;
@@ -54,10 +54,10 @@ class LogicalOperationNode : public Node {
 public:
 	LogicalOperationNode(const LogicalOperation op, const shared_ptr<Node>& lhs_node, const shared_ptr<Node>& rhs_node);
 
-	bool Evaluate(const Date& date, const string& event) const override;
+	bool Evaluate(const Date& date, const string& event) override;
 
 private:
 	const LogicalOperation op_;
-	const shared_ptr<Node> lhs_node_;
-	const shared_ptr<Node> rhs_node_;
+	shared_ptr<Node> lhs_node_;
+	shared_ptr<Node> rhs_node_;
 };

@@ -40,16 +40,18 @@ int Database::RemoveIf(const function<bool(const Date&, const string&)> predicat
 
 	for (auto date_it = mapDBevents_.begin(); date_it != mapDBevents_.end();) {
 		for (auto event_it = (*date_it).second.begin(); event_it != (*date_it).second.end(); ) {
-			if (predicate((*date_it).first, (*event_it))) {
-				mapDBevents_[(*date_it).first].erase(event_it);
+			if (predicate((*date_it).first, *event_it)) {
+				auto it = mapDBevents_[(*date_it).first].erase(event_it);
 				counter++;
+				event_it = it;
 			}
 			else {
 				event_it++;
 			}
 		}
 		if ((*date_it).second.size() == 0) {
-			mapDBevents_.erase((*date_it).first);
+			auto it = mapDBevents_.erase(date_it);
+			date_it = it;
 		}
 		else {
 			date_it++;

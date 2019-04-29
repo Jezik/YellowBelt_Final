@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <vector>
 
 using namespace std;
 
@@ -13,6 +14,20 @@ ostream& operator << (ostream& os, const set<T>& s) {
 	os << "{";
 	bool first = true;
 	for (const auto& x : s) {
+		if (!first) {
+			os << ", ";
+		}
+		first = false;
+		os << x;
+	}
+	return os << "}";
+}
+
+template<typename T>
+std::ostream& operator << (std::ostream& os, const vector<T>& v) {
+	os << "{";
+	bool first = true;
+	for (const auto& x : v) {
 		if (!first) {
 			os << ", ";
 		}
@@ -48,9 +63,7 @@ void AssertEqual(const T& t, const U& u,
 	}
 }
 
-inline void Assert(bool b, const string& hint) {
-	AssertEqual(b, true, hint);
-}
+void Assert(bool b, const string& hint);
 
 class TestRunner {
 public:
@@ -66,12 +79,7 @@ public:
 		}
 	}
 
-	~TestRunner() {
-		if (fail_count > 0) {
-			cerr << fail_count << " unit tests failed. Terminate" << endl;
-			exit(1);
-		}
-	}
+	~TestRunner();
 
 private:
 	int fail_count = 0;
