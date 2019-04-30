@@ -21,13 +21,13 @@ void Database::Print(ostream& stream) const {
 	}
 }
 
-map<Date, vector<string>> Database::FindIf(const function<bool(const Date&, const string&)> predicate) const {
-	map<Date, vector<string>> result;
+vector<pair<Date, string>> Database::FindIf(const function<bool(const Date&, const string&)> predicate) const {
+	vector<pair<Date, string>> result;
 
 	for (const auto& entry : mapDBevents_) {
 		for (const string& event : entry.second) {
 			if (predicate(entry.first, event)) {
-				result[entry.first].push_back(event);
+				result.push_back(make_pair(entry.first, event));
 			}
 		}
 	}
@@ -72,10 +72,8 @@ string Database::Last(const Date& date) const {
 	}
 }
 
-ostream& operator<< (ostream& stream, const pair<Date, vector<string>>& p) {
-	for (const string& str : p.second) {
-		stream << p.first << " " << str << endl;
-	}
+ostream& operator<< (ostream& stream, const pair<Date, string>& p) {
+	stream << p.first << p.second;
 
 	return stream;
 }
