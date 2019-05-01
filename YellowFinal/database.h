@@ -7,6 +7,7 @@
 #include <memory>
 #include <functional>
 #include <utility>
+#include <set>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 	string Last(const Date& date) const;
 
 private:
-	map<Date, vector<string>> mapDBevents_;
+	map<Date, pair<set<string>, vector<set<string>::iterator>>> mapDBevents_;
 };
 
 ostream& operator<< (ostream& stream, const pair<Date, string>& p);

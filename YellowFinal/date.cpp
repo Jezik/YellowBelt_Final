@@ -67,7 +67,7 @@ bool operator!= (const Date& lhs, const Date& rhs) {
 ostream& operator<< (ostream& stream, const Date& date) {
 	stream << setfill('0') << setw(4) << date.GetYear()
 		<< '-' << setfill('0') << setw(2) << date.GetMonth()
-		<< '-' << setfill('0') << setw(2) << date.GetDay() << " ";
+		<< '-' << setfill('0') << setw(2) << date.GetDay();
 
 	return stream;
 }

@@ -1,22 +1,27 @@
 #include "database.h"
 
 #include <algorithm>
+#include <string>
+#include <iostream>
 
 void Database::Add(const Date& date, const string& event) {
+
 	if (mapDBevents_.count(date) > 0) {
-		if (find(begin(mapDBevents_[date]), end(mapDBevents_[date]), event) == mapDBevents_[date].end()) {
-			mapDBevents_[date].push_back(event);
+		auto insert_result = mapDBevents_[date].first.insert(event);
+		if (insert_result.second) {
+			mapDBevents_[date].second.push_back(insert_result.first);
 		}
 	}
 	else {
-		mapDBevents_[date].push_back(event);
+		auto insert_result = mapDBevents_[date].first.insert(event);
+		mapDBevents_[date].second.push_back(insert_result.first);
 	}
 }
 
 void Database::Print(ostream& stream) const {
 	for (const auto& entry : mapDBevents_) {
-		for (const string& event : entry.second) {
-			stream << entry.first << event << endl;
+		for (const auto& it : entry.second.second) {
+			stream << entry.first << " " << *it << endl;
 		}
 	}
 }
@@ -25,9 +30,9 @@ vector<pair<Date, string>> Database::FindIf(const function<bool(const Date&, con
 	vector<pair<Date, string>> result;
 
 	for (const auto& entry : mapDBevents_) {
-		for (const string& event : entry.second) {
-			if (predicate(entry.first, event)) {
-				result.push_back(make_pair(entry.first, event));
+		for (auto& it : entry.second.second) {
+			if (predicate(entry.first, *it)) {
+				result.push_back(make_pair(entry.first, *it));
 			}
 		}
 	}
@@ -38,20 +43,21 @@ vector<pair<Date, string>> Database::FindIf(const function<bool(const Date&, con
 int Database::RemoveIf(const function<bool(const Date&, const string&)> predicate) {
 	int counter = 0;
 
-	for (auto date_it = mapDBevents_.begin(); date_it != mapDBevents_.end();) {
-		for (auto event_it = (*date_it).second.begin(); event_it != (*date_it).second.end(); ) {
-			if (predicate((*date_it).first, *event_it)) {
-				auto it = mapDBevents_[(*date_it).first].erase(event_it);
+	for (auto date_it = mapDBevents_.begin(); date_it != mapDBevents_.end(); ) {
+		for (auto event_it = (*date_it).second.second.begin(); event_it != (*date_it).second.second.end(); ) {
+			if (predicate((*date_it).first, *(*event_it))) {
+				mapDBevents_[(*date_it).first].first.erase(*(*event_it));
+				event_it = mapDBevents_[(*date_it).first].second.erase(event_it);				
+
 				counter++;
-				event_it = it;
 			}
 			else {
 				event_it++;
 			}
 		}
-		if ((*date_it).second.size() == 0) {
-			auto it = mapDBevents_.erase(date_it);
-			date_it = it;
+
+		if (mapDBevents_[(*date_it).first].first.size() == 0) {
+			date_it = mapDBevents_.erase(date_it);
 		}
 		else {
 			date_it++;
@@ -65,7 +71,7 @@ string Database::Last(const Date& date) const {
 	auto it = mapDBevents_.upper_bound(date);
 
 	if (it != mapDBevents_.begin()) {
-		return (*prev(it)).first.ToString() + " " + (*prev(it)).second.back();
+		return (*prev(it)).first.ToString() + " " + *(*prev(it)).second.second.back();
 	}
 	else {
 		return "No entries";
@@ -73,7 +79,7 @@ string Database::Last(const Date& date) const {
 }
 
 ostream& operator<< (ostream& stream, const pair<Date, string>& p) {
-	stream << p.first << p.second;
+	stream << p.first << " " << p.second;
 
 	return stream;
 }
